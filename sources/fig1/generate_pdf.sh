@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#First, generate .tex
+gnuplot fig1.gpt
+
+#Then, generate .pdf
+pdflatex fig1.tex
+
+#Finally, erase non-essential files
+#You can comment any of these lines with # to preserve a specific file
+rm fig1.aux 2>/dev/null
+rm *~ 2>/dev/null
+rm fig1-inc.eps 2>/dev/null
+rm fig1-inc-eps-converted-to.pdf 2>/dev/null
+rm fig1.log 2>/dev/null
+rm fig1.tex 2>/dev/null
+

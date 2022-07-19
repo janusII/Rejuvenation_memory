@@ -1,0 +1,127 @@
+reset
+
+set terminal epslatex size 5,6 color colortext 14 standalone
+set output "fig3.tex"
+
+#colores#
+ColorNames = "c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11 c12 g0_1 g0_2 g0_3 g0_4 g1_1 g1_2 g1_3 g1_4 red1 red2 blue1 blue2"
+
+ColorValues = "0xe69f00 0x56b4e9 0x009e73 0xcc79a7 0x0072b2 0xd55e00 0x9400d3 0xf0e442 0x999999 0x000000 0x97D8C4 0XF30DE5 0xF5B7B1 0xEC7063 0xCB4335 0x943126 0xAED6F1 0x5DADE2 0x2E86C1 0x21618C 0x943126 0xEC7063 0x21618C 0x5DADE2"
+
+myColor(c) = (idx=NaN, sum [i=1:words(ColorNames)] (c eq word(ColorNames,i) ? idx=i : idx), word(ColorValues,idx)) 
+# add transparency (alpha) a=0 to 255 or 0x00 to 0xff
+myTColor(c,a) = sprintf("0x%x%s",a, myColor(c)[3:])
+
+########
+
+TOP=0.999
+BOTTOM=0.08
+LEFT=0.09
+RIGHT=0.998
+
+DY=TOP-BOTTOM
+
+set multiplot layout 1,2
+
+set border lw 3
+
+set tmargin at screen TOP
+set bmargin at screen BOTTOM+DY/3
+set lmargin at screen LEFT
+set rmargin at screen RIGHT
+
+
+set xtics offset 0,0.4
+set ytics offset 0.7,0
+set xtics font ", 30"
+set ytics font ", 30"
+unset xtics
+unset xlabel
+
+set ytics add ('\normalsize$17$' 17)
+set ytics add ('\normalsize$14$' 14)
+set ytics add ('\normalsize$12$' 12)
+set ytics add ('\normalsize$10$' 10)
+set ytics add ('\normalsize$8$' 8)
+set ytics add ('\normalsize$6$' 6)
+set ytics add ('\normalsize$5$' 5)
+set ytics add ('\normalsize$4$' 4)
+set ytics add ('\normalsize$3$' 3)
+set ylabel "$\\xi$" offset 3,0
+
+
+
+set log y
+set xrange [9:32]
+set yrange [2:19]
+
+#set ylabel "$\\xi (t,t_\\mathrm{w};T)$" font ",17" offset 3.1, 1.2
+
+set label "$\\xi_\\mathrm{Zeeman}:\\mathrm{solid} \\, \\, \\, \\mathrm{lines}$" font ",17" at 10,13.4
+set label "$\\xi_\\mathrm{micro}:\\mathrm{dashed}\\, \\, \\, \\mathrm{lines}$" font ",17" at 10,11.2
+
+
+unset key
+
+p "< awk '{if($6==28) print $0}' ../../data/fig3/xi_eff_T05_jump.txt" u 1:2:3 w errorl ps 1.2 pt 7 lw 4 lc rgb myColor("blue1") t "$T=0.5 \\, \\mathrm{jump}$",\
+"< awk '{if($6==28) print $0}' ../../data/fig3/xi_eff_T05_jump.txt"   u 1:4:5 w errorl ps 1.2 pt 6 dt 2 lw 4 lc rgb myColor("blue1") not "$\\xi_\\mathrm{micro},T=0.5 \\, \\mathrm{jump}$",\
+"< awk '{if($1>16) print $0}' ../../data/fig3/xi_eff_T05_native.txt" u 1:2:3 w errorl ps 1.2 pt 7 lw 4 lc rgb myColor("blue2") t "$T=0.5 \\, \\mathrm{native}$",\
+"../../data/fig3/xi_eff_T05_native.txt" u 1:4:5 w errorl ps 1.2 pt 6 dt 2 lw 4 lc rgb myColor("blue2") not "$\\xi_\\mathrm{micro},T=0.5 \\mathrm{native}$",\
+"< awk '{if($6==28) print $0}' ../../data/fig3/xi_eff_T09_jump_back_fromT05.txt" u 1:2:3 w errorl ps 1.2 pt 7 lw 4 lc rgb myColor("c1") t "$T=0.9 \\, \\mathrm{jump}-\\mathrm{back}$",\
+"< awk '{if($6==28) print $0}' ../../data/fig3/xi_eff_T09_jump_back_fromT05.txt" u 1:4:5 w errorl ps 1.2 pt 6 dt 2 lw 4 lc rgb myColor("c1") not "$\\xi_\\mathrm{micro},T=0.9 \\, \\mathrm{jump/back}$",\
+"< awk '{if($6==28) print $0}' ../../data/fig3/xi_eff_T07_jump.txt" u 1:2:3 w errorl ps 1.2 pt 7 lw 4 lc rgb myColor("red1") t "$T=0.7 \\, \\mathrm{jump}$",\
+"< awk '{if($6==28) print $0}' ../../data/fig3/xi_eff_T07_jump.txt" u 1:4:5 w lp ps 1.2 pt 6 dt 2 lw 4 lc rgb myColor("red1") not "$\\xi_\\mathrm{micro},T=0.7 \\, \\mathrm{jump}$",\
+"< awk '{if($1>16) print $0}' ../../data/fig3/xi_eff_T07_native.txt" u 1:2:3 w errorl ps 1.2 pt 7 lw 4 lc rgb myColor("red2") t "$T=0.7 \\, \\mathrm{native}$",\
+"../../data/fig3/xi_eff_T07_native.txt" u 1:4:5 w errorl ps 1.2 pt 6 dt 2 lw 4 lc rgb myColor("red2") not "$\\xi_\\mathrm{micro},T=0.7 \\, \\mathrm{native}$"
+
+set tmargin at screen TOP-2*DY/3
+set bmargin at screen BOTTOM
+set lmargin at screen LEFT
+set rmargin at screen RIGHT
+unset label
+unset key
+unset ylabel
+
+
+set xlabel "$\\log_2(t_1)$" font ",17" offset -0.5, 0.6
+set key Left left top reverse spacing 1.1 samplen 0.8 at 15.9,13 maxrow 3
+  
+
+set yrange [2:8]
+set format y ''
+set ytics offset 0.7,0
+
+set ytics add ('\normalsize$10$' 10)
+set ytics add ('\normalsize$8$' 8)
+set ytics add ('\normalsize$6$' 6)
+set ytics add ('\normalsize$5$' 5)
+set ytics add ('\normalsize$4$' 4)
+set ytics add ('\normalsize$3$' 3)
+
+
+set xtics add ('\normalsize$10$' 10)
+set xtics add ('\normalsize$15$' 15)
+set xtics add ('\normalsize$20$' 20)
+set xtics add ('\normalsize$25$' 25)
+set xtics add ('\normalsize$30$' 30)
+set xtics offset 0,0.1
+#set label "$\\zeta:\\mathrm{full} \\, \\mathrm{triangles}$" font ",17" at 16,9
+set ylabel "$\\zeta$" offset 2.2,0
+
+
+p "< awk '{if($6==28) print $0}' ../../data/fig3/xi_eff_T07_jump.txt" u 1:7:8 w errorl ps 1.8  pt 9 lw 4 lc rgb myColor("red1") not,\
+"< awk '{if($6==28) print $0}' ../../data/fig3/xi_eff_T05_jump.txt"   u 1:7:8 w errorl ps 1.8 pt 9 lw 4 lc rgb myColor("blue1") not,\
+"< awk '{if($6==28) print $0}' ../../data/fig3/xi_eff_T09_jump_back_fromT05.txt" u 1:7:8 w errorl ps 1.8 pt 9 lw 4 lc rgb myColor("c1") not,\
+0/0 lw 6 lc rgb myColor("blue1") t "$T=0.5 \\, \\mathrm{jump}$",\
+0/0 lw 6 lc rgb myColor("blue2") t "$T=0.5 \\, \\mathrm{native}$",\
+0/0 lw 6 lc rgb myColor("c1") t "$T=0.9 \\, \\mathrm{jump-back}$"
+
+set key Left left top reverse spacing 1.1 samplen 0.8 at 23.9,13. maxrow 3
+
+p 0/0 lw 6 lc rgb myColor("red1") t "$T=0.7 \\, \\mathrm{jump}$",\
+0/0 lw 6 lc rgb myColor("red2") t "$T=0.7 \\, \\mathrm{native}$"
+
+
+
+
+unset multiplot
