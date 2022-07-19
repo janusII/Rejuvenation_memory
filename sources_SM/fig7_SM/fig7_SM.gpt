@@ -1,0 +1,64 @@
+set key top left
+
+set terminal epslatex size 6.5,4 color colortext 16 font ",14" standalone
+set output "fig7_SM.tex"
+
+set logs y
+set key Left
+set key top left
+set key samplen -1
+
+set tmargin 0.999
+set rmargin 0.9999
+
+set xlabel "$\\tilde{X}$" offset 0,0.1
+set ylabel "$F(\\tilde{X})$" offset 3,0
+
+set xrange [:1.002]
+
+p "<./lector_dist_func_errors ../../data_SM/fig7_SM/before_jumpback/dist_func_nrinfty_r03_0000000000_0000000400.bin" u 1:2:3 w xerrorbars t "$(A_9,B_5)$ " pt 7 ps 1 lc rgb "dark-violet",\
+"<./lector_dist_func_errors ../../data_SM/fig7_SM/before_jumpback/dist_func_nrinfty_r03_0000000000_000000c567.bin" u 1:2:3 w xerrorbars t "$(A_9,C_5)$" pt 7 ps 1 lc rgb "blue",\
+"<./lector_dist_func_errors ../../data_SM/fig7_SM/before_jumpback/dist_func_nrinfty_r03_0000000000_0000b504f3.bin" u 1:2:3 w xerrorbars t "$(A_9,D_5)$" pt 7 ps 1 lc rgb "web-blue",\
+"<./lector_dist_func_errors ../../data_SM/fig7_SM/before_jumpback/dist_func_nrinfty_r03_0000000000_009837f051.bin" u 1:2:3 w xerrorbars t "$(A_9,E_5)$" pt 7 ps 1 lc rgb "cyan",\
+"<./lector_dist_func_errors ../../data_SM/fig7_SM/after_jumpback/dist_func_nrinfty_r03_0000000000_0000000400.bin" u 1:2:3 w xerrorbars t "$(A_9,B_9)$" pt 7 ps 1 lc rgb "dark-spring-green",\
+"<./lector_dist_func_errors ../../data_SM/fig7_SM/after_jumpback/dist_func_nrinfty_r03_0000000000_000000d744.bin" u 1:2:3 w xerrorbars t "$(A_9,C_9)$" pt 7 ps 1 lc rgb "green",\
+"<./lector_dist_func_errors ../../data_SM/fig7_SM/after_jumpback/dist_func_nrinfty_r03_0000000000_0000b504f3.bin" u 1:2:3 w xerrorbars t "$(A_9,D_9)$" pt 7 ps 1 lc rgb "coral",\
+"<./lector_dist_func_errors ../../data_SM/fig7_SM/after_jumpback/dist_func_nrinfty_r03_0000000000_0080000000.bin" u 1:2:3 w xerrorbars t "$(A_9,E_9)$" pt 7 ps 1 lc rgb "red"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

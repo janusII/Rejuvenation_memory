@@ -1,0 +1,94 @@
+reset
+
+set terminal epslatex size 7.2,5 color colortext 20 standalone
+set out "fig4_SM.tex"
+
+#colores#
+
+ColorNames = "c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11 c12 g0_1 g0_2 g0_3 g0_4 g1_1 g1_2 g1_3 g1_4"                                           
+ColorValues = "0xe69f00 0x56b4e9 0x009e73 0xcc79a7 0x0072b2 0xd55e00 0x9400d3 0xf0e442 0x999999 0x000000 0x97D8C4 0XF30DE5 0xF5B7B1 0xEC7063 0xCB4335 0x943126 0xAED6F1 0x5DADE2 0x2E86C1 0x\
+21618C"                                                                                                                                 
+
+
+myColor(c) = (idx=NaN, sum [i=1:words(ColorNames)] (c eq word(ColorNames,i) ? idx=i : idx), word(ColorValues,idx))                      
+# add transparency (alpha) a=0 to 255 or 0x00 to 0xff                                                                                   
+myTColor(c,a) = sprintf("0x%x%s",a, myColor(c)[3:])      
+
+#2^10 --> c1
+#2^15.625 --> c2
+#2^22 --> c3
+#2^23.5 --> c4
+#2^26.5 --> c5
+#2^31.25 --> c6
+
+
+
+set multiplot
+TOP=0.999
+BOTTOM=0.12
+LEFT=0.07
+RIGHT=0.998
+
+
+
+
+set tmargin at screen TOP
+set bmargin at screen (BOTTOM+TOP)/2
+set lmargin at screen LEFT
+set rmargin at screen RIGHT
+
+
+
+set xtics offset 0,0.4
+set ytics 2 offset 0.7,0
+set xtics font ", 30"
+set ytics font ", 30"
+set format x ""
+unset xlabel
+
+
+set yrange [1:7]
+set xrange [6:32]
+set label "$T=0.5$" at 28,1.5 font ",20"
+set label "$\\zeta(t_1,t_2):\\mathrm{triangles}$" at 6.7,6.4 font ",20"
+set label "$\\xi_\\mathrm{micro}(t_\\mathrm{w},t):\\mathrm{dots}$" at 17,6.4 font ",20"
+set key Left left top reverse spacing 1.1 samplen 0.8 at 15,5.3 maxrow 3
+unset key
+
+p "../../data_SM/fig4_SM/ximicro/T05native/ximicro_tw10.txt"     u 1:2:3 w yerr pt 7 lc rgb myColor("c1")  t "$t_\\mathrm{w}=2^{10}$",\
+"../../data_SM/fig4_SM/ximicro/T05native/ximicro_tw15p625.txt"   u 1:2:3 w yerr pt 7 lc rgb myColor("c2")  t "$t_\\mathrm{w}=2^{15.625}$",\
+"../../data_SM/fig4_SM/ximicro/T05native/ximicro_tw23p5.txt"     u 1:2:3 w yerr pt 7 lc rgb myColor("c4")  t "$t_\\mathrm{w}=2^{23.5}$",\
+"../../data_SM/fig4_SM/ximicro/T05native/ximicro_tw31p25.txt"    u 1:2:3 w yerr pt 7 lc rgb myColor("c6")  t "$t_\\mathrm{w}=2^{31.25}$",\
+"../../data_SM/fig4_SM/zeta/T05native/zeta_growth_tw31p25.txt"  u 1:2:3 w yerr pt 8 lc rgb myColor("c6")  not "t_w=2^{31.25}",\
+"../../data_SM/fig4_SM/zeta/T05native/zeta_growth_tw23p5.txt"   u 1:2:3 w yerr pt 8 lc rgb myColor("c4")  not "t_w=2^{23.5}",\
+"../../data_SM/fig4_SM/zeta/T05native/zeta_growth_tw15p625.txt" u 1:2:3 w yerr pt 8 lc rgb myColor("c2")  not "t_w=2^{15.625}",\
+"../../data_SM/fig4_SM/zeta/T05native/zeta_growth_tw10.txt"     u 1:2:3 w yerr pt 8 lc rgb myColor("c1")  not "t_w=2^{10}"
+
+set tmargin at screen (TOP+BOTTOM)/2
+set bmargin at screen BOTTOM
+set lmargin at screen LEFT
+set rmargin at screen RIGHT
+
+unset label
+unset key
+unset ylabel
+
+set xlabel "$\\log_2(t)$" font ",20" offset 0,0.96
+set format x "\\small$%g$"
+
+set yrange [1:11]
+set label "$T=0.7$" at 28,1.8 font ",20"
+set key Left left top reverse spacing 1.1 samplen 0.8 at 6.1,9.16 maxrow 2
+
+p "../../data_SM/fig4_SM/ximicro/T07native/ximicro_tw10.txt"     u 1:2:3 w yerr pt 7 lc rgb myColor("c1")  t "$t_\\mathrm{w}=2^{10}$",\
+"../../data_SM/fig4_SM/ximicro/T07native/ximicro_tw15p625.txt"   u 1:2:3 w yerr pt 7 lc rgb myColor("c2")  t "$t_\\mathrm{w}=2^{15.625}$",\
+"../../data_SM/fig4_SM/ximicro/T07native/ximicro_tw23p5.txt"     u 1:2:3 w yerr pt 7 lc rgb myColor("c4")  t "$t_\\mathrm{w}=2^{23.5}$",\
+"../../data_SM/fig4_SM/ximicro/T07native/ximicro_tw31p25.txt"    u 1:2:3 w yerr pt 7 lc rgb myColor("c6")  t "$t_\\mathrm{w}=2^{31.25}$",\
+"../../data_SM/fig4_SM/zeta/T07native/zeta_growth_tw31p25.txt"  u 1:2:3 w yerr pt 8 lc rgb myColor("c6")  not "t_w=2^{31.25}",\
+"../../data_SM/fig4_SM/zeta/T07native/zeta_growth_tw23p5.txt"   u 1:2:3 w yerr pt 8 lc rgb myColor("c4")  not "t_w=2^{23.5}",\
+"../../data_SM/fig4_SM/zeta/T07native/zeta_growth_tw15p625.txt" u 1:2:3 w yerr pt 8 lc rgb myColor("c2")  not "t_w=2^{15.625}",\
+"../../data_SM/fig4_SM/zeta/T07native/zeta_growth_tw10.txt"     u 1:2:3 w yerr pt 8 lc rgb myColor("c1")  not "t_w=2^{10}"
+
+
+
+unset multiplot

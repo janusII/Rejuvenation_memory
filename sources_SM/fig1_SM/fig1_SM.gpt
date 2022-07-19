@@ -1,0 +1,68 @@
+set terminal epslatex size 7.2,5 color colortext 20 standalone
+set out "fig1_SM.tex"
+set multiplot
+
+TOP=0.999
+BOTTOM=0.12
+LEFT=0.16
+RIGHT=0.998
+
+
+set tmargin at screen TOP
+set bmargin at screen BOTTOM
+set lmargin at screen LEFT
+set rmargin at screen RIGHT
+
+####S000
+
+h0_nat_S0=`awk '{if($2==31.25 && $8==0 && $10=="S000") print $5}' ../../data_SM/fig1_SM/teff_native_T05_Cpeak31p25.txt`
+err_h0_nat_S0=`awk '{if($2==31.25 && $8==0 && $10=="S000") print $6}' ../../data_SM/fig1_SM/teff_native_T05_Cpeak31p25.txt`
+
+####S0001
+h0_nat_S1=`awk '{if($2==31.25 && $8==0 && $10=="S001") print $5}' ../../data_SM/fig1_SM/teff_native_T05_Cpeak31p25.txt`
+err_h0_nat_S1=`awk '{if($2==31.25 && $8==0 && $10=="S001") print $6}' ../../data_SM/fig1_SM/teff_native_T05_Cpeak31p25.txt`
+
+
+#S002
+h0_nat_S2=`awk '{if($2==31.25 && $8==0 && $10=="S002") print $5}' ../../data_SM/fig1_SM/teff_native_T05_Cpeak31p25.txt`
+err_h0_nat_S2=`awk '{if($2==31.25 && $8==0 && $10=="S002") print $6}' ../../data_SM/fig1_SM/teff_native_T05_Cpeak31p25.txt`
+
+
+###S0003
+h0_nat_S3=`awk '{if($2==31.25 && $8==0 && $10=="S003") print $5}' ../../data_SM/fig1_SM/teff_native_T05_Cpeak31p25.txt`
+err_h0_nat_S3=`awk '{if($2==31.25 && $8==0 && $10=="S003") print $6}' ../../data_SM/fig1_SM/teff_native_T05_Cpeak31p25.txt`
+
+
+set yrange [-0.35:0.03]
+set xrange [:0.000312]
+set label "$T=0.5,\\mathrm{native} : t_\\mathrm{w}=t_\\mathrm{w}^\\downarrow + 2^{31.25}$" font ",20" at 0.00005, -0.
+
+set xlabel "$H^2$" font ",20" offset 0,0.8
+set ylabel "$\\log \\left( t^\\mathrm{eff}_{\\mathrm{S}_i,H} / t^\\mathrm{eff}_{\\mathrm{S}_i,H \\to 0^+} \\right)$" font ",20" offset 3,0
+set key Left bottom left samplen 1.9 spacing 1.5 reverse
+i=sprintf("S000")
+j=sprintf("S001")
+k=sprintf("S002")
+z=sprintf("S003")
+
+set xtics offset 0,0.3
+set ytics offset 0.7,0
+set ytics -0.3,0.1 font ", 30" 
+set xtics font ", 30"
+
+set format x "\\small$%g$"
+set format y "\\small$%g$"
+
+set xtics (0, "$(0.01)^2$" 0.01**2, "$(0.014)^2$" 0.014**2, "$(0.017)^2$" 0.017**2)
+set bar 2
+
+
+
+p "< awk -v var=".i." '{if($2==31.25 && $10==var && $8!=0) print $0}' ../../data_SM/fig1_SM/teff_native_T05_Cpeak31p25.txt" u ($8**2):($5-h0_nat_S0):(sqrt($6**2+err_h0_nat_S0**2)) w yerr pt 7 ps 1.2 t "$\\mathrm{S}_0$",\
+"< awk -v var=".j." '{if($2==31.25 && $10==var && $8!=0) print $0}' ../../data_SM/fig1_SM/teff_native_T05_Cpeak31p25.txt" u ($8**2):($5-h0_nat_S1):(sqrt($6**2+err_h0_nat_S1**2)) w yerr pt 7 ps 1.2 t "$\\mathrm{S}_1$",\
+"< awk -v var=".k." '{if($2==31.25 && $10==var && $8!=0) print $0}' ../../data_SM/fig1_SM/teff_native_T05_Cpeak31p25.txt" u ($8**2):($5-h0_nat_S2):(sqrt($6**2+err_h0_nat_S2**2)) w yerr pt 7 ps 1.2 t "$\\mathrm{S}_2$",\
+"< awk -v var=".z." '{if($2==31.25 && $10==var && $8!=0) print $0}' ../../data_SM/fig1_SM/teff_native_T05_Cpeak31p25.txt" u ($8**2):($5-h0_nat_S3):(sqrt($6**2+err_h0_nat_S3**2)) w yerr pt 7 ps 1.2 t "$\\mathrm{S}_3$",\
+"< awk -v var=".i." '{if($2==31.25 && $10==var && $8==0) print $0}' ../../data_SM/fig1_SM/teff_native_T05_Cpeak31p25.txt" u ($8**2):($5-h0_nat_S0) w p pt 7 ps 1.2 lc 1 not,\
+"< awk -v var=".j." '{if($2==31.25 && $10==var && $8==0) print $0}' ../../data_SM/fig1_SM/teff_native_T05_Cpeak31p25.txt" u ($8**2):($5-h0_nat_S1) w p pt 7 ps 1.2 lc 2 not,\
+"< awk -v var=".k." '{if($2==31.25 && $10==var && $8==0) print $0}' ../../data_SM/fig1_SM/teff_native_T05_Cpeak31p25.txt" u ($8**2):($5-h0_nat_S2) w p pt 7 ps 1.2 lc 3 not,\
+"< awk -v var=".z." '{if($2==31.25 && $10==var && $8==0) print $0}' ../../data_SM/fig1_SM/teff_native_T05_Cpeak31p25.txt" u ($8**2):($5-h0_nat_S3) w p pt 7 ps 1.2 lc 4 not

@@ -1,0 +1,158 @@
+############################
+# Paleta ColorBlind friendly
+############################
+colorSet(name, rgb) = sprintf("color_\%s = \%d", name, rgb)
+colorGet(name) = value(sprintf("color_\%s", name))
+
+eval colorSet("c1", 0xe69f00)
+eval colorSet("c2", 0x56b4e9)
+eval colorSet("c3", 0x009e73)
+eval colorSet("c4", 0xcc79a7)
+eval colorSet("c5", 0x0072b2)
+eval colorSet("c6", 0xd55e00)
+eval colorSet("c7", 0x9400d3)
+eval colorSet("c8", 0xf0e442)
+eval colorSet("c9", 0x999999)
+eval colorSet("c10", 0x000000)
+
+
+ColorNames = "c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 g0_1 g0_2 g0_3 g0_4 g1_1 g1_2 g1_3 g1_4"
+ColorValues = "0xe69f00 0x56b4e9 0x009e73 0xcc79a7 0x0072b2 0xd55e00 0x9400d3 0xf0e442 0x999999 0x000000 0xF5B7B1 0xEC7063 0xCB4335 0x943126 0xAED6F1 0x5DADE2 0x2E86C1 0x21618C"
+
+myColor(c) = (idx=NaN, sum [i=1:words(ColorNames)] (c eq word(ColorNames,i) ? idx=i : idx), word(ColorValues,idx))
+# add transparency (alpha) a=0 to 255 or 0x00 to 0xff
+myTColor(c,a) = sprintf("0x%x%s",a, myColor(c)[3:])
+
+name="5"
+if(name=="5"){
+   xl=0.72
+   yl=0.4
+   xrangemin=0.5
+   xkey=0.65
+   ykey=0.82
+
+}else{
+   if(name=="7"){
+      xl=0.83
+      yl=0.4
+      xrangemin=0.7
+      xkey=0.79
+      ykey=0.82
+   }else{
+      set print "Error en name. Saliendo..."
+      exit
+   }
+}
+
+################################################
+################ RMAX PLOTS ####################
+################################################
+
+reset
+set auto
+
+set terminal epslatex size 10,6 color colortext 16 font ",14" standalone
+set output "fig5_SM.tex"
+
+LEFT = 0.10
+RIGHT = 0.005
+BOTTOM = 0.08
+TOP = 0.02
+
+SPACE_HOR=0
+SPACE_VERT=0
+
+NUMCOLS=2
+NUMROWS=2
+
+YWINDOW=(1-TOP-BOTTOM-SPACE_VERT)/2
+XWINDOW=(1-RIGHT-LEFT-SPACE_HOR)/2
+
+set multiplot
+
+#GLOBAL
+set xrange [xrangemin:1]
+set xtics xrangemin,0.1
+set logs y
+
+#PRIMER GRAFICO
+set tmargin at screen 1-TOP
+set bmargin at screen 1-TOP-YWINDOW
+set lmargin at screen LEFT
+set rmargin at screen LEFT+XWINDOW
+
+unset xlabel
+set xtics format " "
+set ylabel "$F(\\tilde{X})$" offset 3,0
+set key at xkey,ykey samplen 2
+
+set label "(A$_9$,B$_".sprintf("%s",name)."$)" at xl,yl
+
+plot for [idloop=0:7] "<./lector_dist_func_errors ../../data_SM/fig5_SM/dist_func_nrinfty_r".sprintf("%02d",2*idloop+1)."_0000000000_0000000400.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c".sprintf("%d",idloop+1)) t "$R=".sprintf("%2d",2*idloop+1)."$"
+
+unset label
+
+#SEGUNDO GRAFICO
+set tmargin at screen 1-TOP
+set bmargin at screen 1-TOP-YWINDOW
+set lmargin at screen 1-RIGHT-XWINDOW
+set rmargin at screen 1-RIGHT
+
+unset ylabel
+unset xlabel
+set ytics format " "
+set key top left
+
+set label "(A$_9$,C$_".sprintf("%s",name)."$)" at xl,yl
+ 
+plot for [idloop=0:7] "<./lector_dist_func_errors ../../data_SM/fig5_SM/dist_func_nrinfty_r".sprintf("%02d",2*idloop+1)."_0000000000_000000c567.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c".sprintf("%d",idloop+1)) not #t "r=".sprintf("%02d",2*idloop+1)
+
+unset label
+
+#TERCER GRAFICO
+set tmargin at screen BOTTOM+YWINDOW
+set bmargin at screen BOTTOM
+set lmargin at screen LEFT
+set rmargin at screen LEFT+XWINDOW
+
+set xlabel "$\\tilde{X}$" offset 0,0.5
+set ylabel "$F(\\tilde{X})$" offset 3,0
+set xtics format "%g"
+set xtics 0.5,0.1,0.9
+set ytics format "%g"
+set key top left
+
+set label "(A$_9$,D$_".sprintf("%s",name)."$)" at xl,yl
+
+plot for [idloop=0:7] "<./lector_dist_func_errors ../../data_SM/fig5_SM/dist_func_nrinfty_r".sprintf("%02d",2*idloop+1)."_0000000000_0000b504f3.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c".sprintf("%d",idloop+1)) not #t "r=".sprintf("%02d",2*idloop+1)
+
+unset label
+
+#CUARTO GRAFICO
+set tmargin at screen BOTTOM+YWINDOW
+set bmargin at screen BOTTOM
+set lmargin at screen 1-RIGHT-XWINDOW
+set rmargin at screen 1-RIGHT
+
+set xlabel "$\\tilde{X}$" offset 0,0.5
+set xtics 0.5,0.1,1
+unset ylabel
+set ytics format " "
+set key top left
+
+set label "(A$_9$,E$_".sprintf("%s",name)."$)" at xl,yl
+
+plot for [idloop=0:7] "<./lector_dist_func_errors ../../data_SM/fig5_SM/dist_func_nrinfty_r".sprintf("%02d",2*idloop+1)."_0000000000_009837f051.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c".sprintf("%d",idloop+1)) not #t "r=".sprintf("%02d",2*idloop+1)
+
+unset label
+
+unset multiplot
+
+
+
+#######################################################################
+#######################################################################
+#######################################################################
+
+
+

@@ -1,0 +1,153 @@
+reset
+
+set terminal epslatex size 12,12 color colortext 17 standalone header "\\usepackage{bm}"
+set output "fig2_SM.tex"
+
+
+#colores#
+                                                                                                                                     
+ColorNames = "c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11 c12 g0_1 g0_2 g0_3 g0_4 g1_1 g1_2 g1_3 g1_4"                                                                                                
+ColorValues = "0xe69f00 0x56b4e9 0x009e73 0xcc79a7 0x0072b2 0xd55e00 0x9400d3 0xf0e442 0x999999 0x000000 0x97D8C4 0XF30DE5 0xF5B7B1 0xEC7063 0xCB4335 0x943126 0xAED6F1 0x5DADE2 0x2E86C1 0x21618C"
+                                                                                                                                                                                             
+myColor(c) = (idx=NaN, sum [i=1:words(ColorNames)] (c eq word(ColorNames,i) ? idx=i : idx), word(ColorValues,idx))                                                                           
+# add transparency (alpha) a=0 to 255 or 0x00 to 0xff                                                                                                                                        
+myTColor(c,a) = sprintf("0x%x%s",a, myColor(c)[3:])
+
+#2^10 --> c1
+#2^15.625 --> c2
+#2^22 --> c3
+#2^23.5 --> c4
+#2^26.5 --> c5
+#2^31.25 --> c6
+
+########
+
+TOP=0.999
+BOTTOM=0.05
+LEFT=0.07
+RIGHT=0.998
+
+Dx=RIGHT-LEFT
+A=0.1
+B=0#0.034
+
+
+set tmargin at screen TOP
+set bmargin at screen (BOTTOM+TOP)/2+A
+set lmargin at screen LEFT
+set rmargin at screen LEFT+Dx/3+B
+
+set multiplot
+
+set format x "\\small$%g$"
+set format y "\\small$%4.3f$"
+
+set ytics 0.005 offset 0.7,0
+set xtics 8 offset 0,0.4
+set mxtics 8
+set border lw 8
+set xrange [5:33]
+set yrange [0.012:0.027]
+unset key
+set xlabel "$\\log_2t$" font ",20" offset 0,0.95
+set ylabel "$S(t,t_\\mathrm{w};H\\!=\\!0.01)$" font ",20" offset 3.8,0
+
+set label "\\bm{$T\\!=\\!0.9$}" font ",20" at 8, 0.0092 textcolor "red"
+set label "$\\bm{T\\!=\\!0.7}$" font ",20" at 8, 0.0055 textcolor "#000099"
+
+set arrow  1  heads size 1, 90,0 from     5,   0.0101  to  33, 0.0101  nofilled back lc rgb "red" lw 15
+set arrow  3  heads size 1, 90,0 from     33,  0.0101  to  61, 0.0101  nofilled back lc rgb "red" lw 15 
+set arrow  5  heads size 1, 90,0 from     61,  0.0101  to  61+28, 0.0101  nofilled back lc rgb "red" lw 15 
+
+set arrow  2  heads size 1, 90,0 from     5,   0.0048   to  33, 0.0048  nofilled back lc rgb "#000099" lw 15
+set arrow  4  heads size 1, 90,0 from     33,   0.0048  to  61, 0.0048 nofilled back lc rgb "#000099" lw 15
+
+set arrow  16  head  from     23,  0.0096  to  30, 0.0096 head filled size screen 0.03,15,45 lc rgb "red" lw 10 
+set arrow  7  head  from     23,  0.0053  to  30, 0.0053  head filled size screen 0.03,15,45 lc rgb "#000099" lw 10 
+set arrow  8  head  from     23,  0.0088  to  30, 0.0088  head filled size screen 0.03,15,45 lc rgb "#006600" lw 10
+
+
+set arrow  9  head  from     33,  0.0097  to  33, 0.0053 head filled size screen 0.03,15,45 lc rgb "#006600" lw 10 
+set label "$\\mathbf{temperature}$" font ",10" at 33.5, 0.0076 textcolor "#006600"
+set label "$\\mathbf{jump}$" font ",10" at 37, 0.0068 textcolor "#006600"
+
+set arrow  10  head  from     44,  0.0053  to  51, 0.0053  head filled size screen 0.03,15,45 lc rgb "#006600" lw 10 
+
+set arrow  11  head  from     61,  0.0052  to  61, 0.0096 head filled size screen 0.03,15,45 lc rgb "#006600" lw 10 
+
+set label "$\\mathbf{temperature}$" font ",10" at 61.5, 0.0076 textcolor "#006600"
+set label "$\\mathbf{jump}$ $\\mathbf{back}$" font ",10" at 62.5, 0.0068 textcolor "#006600"
+
+set arrow  12  head  from     64,  0.0096  to  71, 0.0096  head filled size screen 0.03,15,45 lc rgb "#006600" lw 10
+
+set label "$t_\\mathrm{w}^\\downarrow \\rightarrow$ $2^{31.25}$ MC steps at $T\\!=\\!0.9$" font ",10" at 62.5,0.003
+
+set label "$t^\\uparrow_\\mathrm{w} \\rightarrow$ $2^{31.25}$ MC steps at $T \\!=\\!0.9$" font ",10" at 62.5,0.001
+set label "+ $2^{31.25}$ MC steps at $T\\!=\\!0.7$" font ",10" at 65,0.000
+
+
+set label "$\\mathbf{Rejuvenation}$" font ",10" at 40,-0.002 textcolor "#006600"
+set label "$\\mathbf{Memory}$" font ",10" at 71,0.023 textcolor "#006600"
+
+
+
+set key Left reverse spacing 1. samplen 1.0 at 23, 0.0266
+
+p "../../data_SM/relaxation_S_T07/T09native/S_ofMC_jk_tw22.txt"  u 2:3:4 w errorl pt 7 lw 3 lc rgb myColor("c3") t  "$t_\\mathrm{w}=2^{22}$",\
+"../../data_SM/relaxation_S_T07/T09native/S_ofMC_jk_tw26p5.txt"  u 2:3:4 w errorl pt 5 lw 3 lc rgb myColor("c5")  t  "$t_\\mathrm{w}=2^{26.5}$",\
+"../../data_SM/relaxation_S_T07/T09native/S_ofMC_jk_tw31p25.txt"  u 2:3:4 w errorl pt 9 lw 3 lc rgb myColor("c6") t  "$t_\\mathrm{w}=2^{31.25}$"
+
+
+set tmargin at screen (BOTTOM+TOP)/2-A
+set bmargin at screen BOTTOM
+set lmargin at screen LEFT
+set rmargin at screen LEFT+Dx/3+B
+
+set xlabel "$ \\log_2t$" font "20" offset 0,0.9
+unset label
+set yrange [0.006:0.03]
+
+unset arrow
+set key Left reverse spacing 1. samplen 1.0 at 33, 0.029
+
+p "../../data_SM/relaxation_S_T07/T07native/S_ofMC_jk_tw10.txt"   u 2:3:4 w errorl pt 7 lw 3 lc rgb myColor("c1") t  "$t_\\mathrm{w}=2^{10}$",\
+"../../data_SM/relaxation_S_T07/T07native/S_ofMC_jk_tw15p625.txt" u 2:3:4 w errorl pt 5 lw 3 lc rgb myColor("c2")  t  "$t_\\mathrm{w}=2^{15.625}$",\
+"../../data_SM/relaxation_S_T07/T07native/S_ofMC_jk_tw23p5.txt"   u 2:3:4 w errorl pt 9 lw 3 lc rgb myColor("c4") t "$t_\\mathrm{w}=2^{23.5}$",\
+"../../data_SM/relaxation_S_T07/T07native/S_ofMC_jk_tw31p25.txt"  u 2:3:4 w errorl pt 2 lw 3 lc  rgb myColor("c6") t  "$t_\\mathrm{w}=2^{31.25}$"
+
+
+set tmargin at screen (TOP+BOTTOM)/2-A
+set bmargin at screen BOTTOM
+set lmargin at screen LEFT+Dx/3+B
+set rmargin at screen LEFT+Dx*2/3-B
+
+set key Left reverse spacing 1.7 samplen 1.0 font ",24" at 30,0.029 
+unset ylabel
+set format y ""
+
+p "../../data_SM/relaxation_S_T07/T07jump/S_ofMC_jk_tw10.txt"   u 2:3:4 w errorl pt 7 lw 3 lc rgb myColor("c1") t "$t_\\mathrm{w}=2^{10} \\; \\mathrm{after} \\; t_\\mathrm{w}^{\\downarrow}$",\
+"../../data_SM/relaxation_S_T07/T07jump/S_ofMC_jk_tw15p625.txt" u 2:3:4 w errorl pt 5 lw 3 lc rgb myColor("c2") t "$t_\\mathrm{w}=2^{15.625} \\; \\mathrm{after} \\; t_\\mathrm{w}^{\\downarrow}$",\
+"../../data_SM/relaxation_S_T07/T07jump/S_ofMC_jk_tw23p5.txt"  u 2:3:4 w errorl pt 9 lw 3 lc rgb myColor("c4") t "$t_\\mathrm{w}=2^{23.5} \\; \\mathrm{after} \\; t_\\mathrm{w}^{\\downarrow}$",\
+"< awk '{if($1==4) print $0}' /outnfsV/ea_FC/prod/T07/h0fromh0T09t31p25/h001fromt31p25/S000/S_ofMC_jk.txt" u 2:3:4 w errorl pt 2 lw 3 lc rgb myColor("c6") t  "$t_\\mathrm{w}=2^{31.25} \\; \\mathrm{after} \\; t_\\mathrm{w}^{\\downarrow}$"
+
+#"../../data_SM/relaxation_S_T07/T07jump/S_ofMC_jk_tw31p25.txt" u 2:3:4 w errorl pt 2 lw 3 lc rgb myColor("c6") t  "$t_\\mathrm{w}=t_\\mathrm{w}^\\downarrow+2^{31.25}$"
+
+
+set tmargin at screen TOP
+set bmargin at screen (BOTTOM+TOP)/2+A
+set lmargin at screen LEFT+2*Dx/3-B
+set rmargin at screen RIGHT
+
+
+set format y "\\small$%5.3f$"
+set ytics 0.005 offset 0.7,0
+
+set key Left reverse spacing 1. samplen 1.0 at 28, 0.026
+set ylabel "$S(t,t_\\mathrm{w};H\\!=\\!0.01)$" font ",20" offset 3.5,0
+set xlabel "$\\log_2t$" offset 0,0.95
+
+set yrange [0.012:0.027]
+
+p "../../data_SM/relaxation_S_T07/T09jumpback/S_ofMC_jk_tw10.txt" u 2:3:4 w errorl pt 7 ps 1.2 lw 3 lc rgb myColor("c12") t "$t_\\mathrm{w}=2^{10} \\; \\mathrm{after} \\; t_\\mathrm{w}^{\\uparrow}$"
+
+unset multiplot

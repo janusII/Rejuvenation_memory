@@ -1,0 +1,164 @@
+ColorNames = "c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11 c12 g0_1 g0_2 g0_3 g0_4 g1_1 g1_2 g1_3 g1_4"
+ColorValues = "0xe69f00 0x56b4e9 0x009e73 0xcc79a7 0x0072b2 0xd55e00 0x9400d3 0xf0e442 0x999999 0x000000 0x97D8C4 0XF30DE5 0xF5B7B1 0xEC7063 0xCB4335 0x943126 0xAED6F1 0x5DADE2 0x2E86C1 0x21618C"
+
+myColor(c) = (idx=NaN, sum [i=1:words(ColorNames)] (c eq word(ColorNames,i) ? idx=i : idx), word(ColorValues,idx))
+# add transparency (alpha) a=0 to 255 or 0x00 to 0xff
+myTColor(c,a) = sprintf("0x%x%s",a, myColor(c)[3:])
+
+
+#######################################################################
+################### FIGURA ARTICULO DOS PANELES #######################
+#######################################################################
+
+reset
+set auto
+
+set terminal epslatex size 11,9 color colortext 16 font ",17" standalone header "\\usepackage{bm}"
+set output "fig8_SM.tex"
+
+LEFT = 0.09
+RIGHT = 0.99
+BOTTOM = 0.06
+TOP = 0.99
+
+DY=TOP-BOTTOM
+DX=RIGHT-LEFT
+
+set multiplot
+
+set tmargin at screen TOP
+set bmargin at screen BOTTOM+DY/2
+set lmargin at screen LEFT
+set rmargin at screen RIGHT-DX/2
+
+set logs y
+set key at 0.63,0.4
+set key samplen -1 spacing 1.2
+
+set ylabel "$F(\\tilde{X})$" offset 4.3,0
+set format x ' '
+#set x2tics nomirror
+#set x2tics offset 0,-0.5
+unset xlabel
+set xrange [0.35:1]
+set x2range [0.35:1]
+set label "$\\bm{R=3}$" at 0.48,0.6 font ",24"
+set ytics offset 0.9,-0.1
+set xtics offset 0,0.4
+
+p "<./lector_dist_func_errors ../../data_SM/fig8_SM/sg//dist_func_nrinfty_r03_009837f051_0000000400.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c1") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/sg//dist_func_nrinfty_r03_009837f051_000000c567.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c2") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/sg//dist_func_nrinfty_r03_009837f051_0000b504f3.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c3") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/sg//dist_func_nrinfty_r03_009837f051_009837f051.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c4") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/isdil/T0509/dist_func_nrinfty_r03_000000004c_00000001ae.bin" u 1:2:3 w xerrorbars pt 4 lc rgb myColor("c10") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/isdil/T0505/dist_func_nrinfty_r03_000000004c_0000000045.bin" u 1:2:3 w xerrorbars pt 4 lc rgb myColor("c6") not ,\
+0/0 with points ps 2 pt 7 lc rgb myColor("c1") t "SG: $(\\mathrm{A_{5}}$,$\\mathrm{B_{5}})$",\
+0/0 with points ps 2 pt 7 lc rgb myColor("c2") t "SG: $(\\mathrm{A_{5}}$,$\\mathrm{C_{5}})$",\
+0/0 with points ps 2 pt 7 lc rgb myColor("c3") t "SG: $(\\mathrm{A_{5}}$,$\\mathrm{D_{5}})$",\
+0/0 with points ps 2 pt 7 lc rgb myColor("c4") t "SG: $(\\mathrm{A_{5}}$,$\\mathrm{E_{5}})$",\
+0/0 with points ps 2 pt 4 lc rgb myColor("c10") t "DIM: $(\\mathrm{A'_{5}}$,$\\mathrm{A'_{9}})$",\
+0/0 with points ps 2 pt 4 lc rgb myColor("c6") t "DIM: $(\\mathrm{A'_{5}}$,$\\mathrm{B'_{5}})$"
+
+
+set tmargin at screen TOP
+set bmargin at screen BOTTOM+DY/2
+set lmargin at screen LEFT+DX/2
+set rmargin at screen RIGHT
+
+set logs y
+unset key
+set y2tics
+set format x ' '
+unset xlabel
+set xrange [0.35:1]
+unset label
+set label "$\\bm{R=5}$" at 0.48,0.6 font ",24"
+unset xtics
+unset ytics
+unset ylabel
+set y2tics offset 0.9,-0.1
+set xtics offset 0,0.4
+
+p "<./lector_dist_func_errors ../../data_SM/fig8_SM/sg//dist_func_nrinfty_r05_009837f051_0000000400.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c1") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/sg//dist_func_nrinfty_r05_009837f051_000000c567.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c2") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/sg//dist_func_nrinfty_r05_009837f051_0000b504f3.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c3") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/sg//dist_func_nrinfty_r05_009837f051_009837f051.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c4") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/isdil/T0509/dist_func_nrinfty_r05_000000004c_00000001ae.bin" u 1:2:3 w xerrorbars pt 4 lc rgb myColor("c10") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/isdil/T0505/dist_func_nrinfty_r05_000000004c_0000000045.bin" u 1:2:3 w xerrorbars pt 4 lc rgb myColor("c6") not ,\
+0/0 with points ps 2 pt 7 lc rgb myColor("c1") t "SG: $(\\mathrm{A_{5}}$,$\\mathrm{B_{5}})$",\
+0/0 with points ps 2 pt 7 lc rgb myColor("c2") t "SG: $(\\mathrm{A_{5}}$,$\\mathrm{C_{5}})$",\
+0/0 with points ps 2 pt 7 lc rgb myColor("c3") t "SG: $(\\mathrm{A_{5}}$,$\\mathrm{D_{5}})$",\
+0/0 with points ps 2 pt 7 lc rgb myColor("c4") t "SG: $(\\mathrm{A_{5}}$,$\\mathrm{E_{5}})$",\
+0/0 with points ps 2 pt 4 lc rgb myColor("c10") t "DIM: $(\\mathrm{A'_{5}}$,$\\mathrm{A'_{9}})$",\
+0/0 with points ps 2 pt 4 lc rgb myColor("c6") t "DIM: $(\\mathrm{A'_{5}}$,$\\mathrm{B'_{5}})$"
+
+
+set tmargin at screen TOP-DY/2
+set bmargin at screen BOTTOM
+set lmargin at screen LEFT
+set rmargin at screen RIGHT-DX/2
+
+set logs y
+
+set ylabel "$F(\\tilde{X})$" offset 4.3,0
+set format x "%g"
+set format x2 " "
+set xlabel "$\\tilde{X}$" offset 0,0.7
+set xrange [0.35:1]
+set x2range [0.35:1]
+unset label
+set label "$\\bm{R=10}$" at 0.48,0.6 font ",24"
+set ytics offset 0.9,-0.1
+set xtics offset 0,0.4
+unset y2tics
+
+
+p "<./lector_dist_func_errors ../../data_SM/fig8_SM/sg//dist_func_nrinfty_r10_009837f051_0000000400.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c1") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/sg//dist_func_nrinfty_r10_009837f051_000000c567.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c2") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/sg//dist_func_nrinfty_r10_009837f051_0000b504f3.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c3") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/sg//dist_func_nrinfty_r10_009837f051_009837f051.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c4") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/isdil/T0509/dist_func_nrinfty_r10_000000004c_00000001ae.bin" u 1:2:3 w xerrorbars pt 4 lc rgb myColor("c10") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/isdil/T0505/dist_func_nrinfty_r10_000000004c_0000000045.bin" u 1:2:3 w xerrorbars pt 4 lc rgb myColor("c6") not ,\
+0/0 with points ps 2 pt 7 lc rgb myColor("c1") t "SG: $(\\mathrm{A_{5}}$,$\\mathrm{B_{5}})$",\
+0/0 with points ps 2 pt 7 lc rgb myColor("c2") t "SG: $(\\mathrm{A_{5}}$,$\\mathrm{C_{5}})$",\
+0/0 with points ps 2 pt 7 lc rgb myColor("c3") t "SG: $(\\mathrm{A_{5}}$,$\\mathrm{D_{5}})$",\
+0/0 with points ps 2 pt 7 lc rgb myColor("c4") t "SG: $(\\mathrm{A_{5}}$,$\\mathrm{E_{5}})$",\
+0/0 with points ps 2 pt 4 lc rgb myColor("c10") t "DIM: $(\\mathrm{A'_{5}}$,$\\mathrm{A'_{9}})$",\
+0/0 with points ps 2 pt 4 lc rgb myColor("c6") t "DIM: $(\\mathrm{A'_{5}}$,$\\mathrm{B'_{5}})$"
+
+set tmargin at screen TOP-DY/2
+set bmargin at screen BOTTOM
+set lmargin at screen LEFT+DX/2
+set rmargin at screen RIGHT
+
+set logs y
+unset key
+set y2tics
+set format x "%g"
+set xlabel "$\\tilde{X}$" offset 0,0.7
+set xrange [0.35:1]
+set x2range [0.35:1]
+unset label
+set label "$\\bm{R=15}$" at 0.48,0.6 font ",24"
+unset xtics
+unset ytics
+unset ylabel
+set y2tics offset 0.9,-0.1
+set xtics offset 0,0.4
+
+
+p "<./lector_dist_func_errors ../../data_SM/fig8_SM/sg//dist_func_nrinfty_r15_009837f051_0000000400.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c1") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/sg//dist_func_nrinfty_r15_009837f051_000000c567.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c2") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/sg//dist_func_nrinfty_r15_009837f051_0000b504f3.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c3") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/sg//dist_func_nrinfty_r15_009837f051_009837f051.bin" u 1:2:3 w xerrorbars pt 7 lc rgb myColor("c4") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/isdil/T0509/dist_func_nrinfty_r15_000000004c_00000001ae.bin" u 1:2:3 w xerrorbars pt 4 lc rgb myColor("c10") not,\
+"<./lector_dist_func_errors ../../data_SM/fig8_SM/isdil/T0505/dist_func_nrinfty_r15_000000004c_0000000045.bin" u 1:2:3 w xerrorbars pt 4 lc rgb myColor("c6") not ,\
+0/0 with points ps 2 pt 7 lc rgb myColor("c1") t "SG: $(\\mathrm{A_{5}}$,$\\mathrm{B_{5}})$",\
+0/0 with points ps 2 pt 7 lc rgb myColor("c2") t "SG: $(\\mathrm{A_{5}}$,$\\mathrm{C_{5}})$",\
+0/0 with points ps 2 pt 7 lc rgb myColor("c3") t "SG: $(\\mathrm{A_{5}}$,$\\mathrm{D_{5}})$",\
+0/0 with points ps 2 pt 7 lc rgb myColor("c4") t "SG: $(\\mathrm{A_{5}}$,$\\mathrm{E_{5}})$",\
+0/0 with points ps 2 pt 4 lc rgb myColor("c10") t "DIM: $(\\mathrm{A'_{5}}$,$\\mathrm{A'_{9}})$",\
+0/0 with points ps 2 pt 4 lc rgb myColor("c6") t "DIM: $(\\mathrm{A'_{5}}$,$\\mathrm{B'_{5}})$"
+
+
+unset multiplot
